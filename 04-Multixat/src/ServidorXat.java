@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
 
@@ -38,7 +41,7 @@ public class ServidorXat {
     }
 
     public void finalitzarXat() {
-        enviarMissatgeGrup(MSG_SORTIR);
+        enviarMissatgeGrup(Missatge.getMissatgeSortirTots("sortir"));
         nom.clear();
         sortir = true;
         pararServidor();
@@ -46,7 +49,11 @@ public class ServidorXat {
 
     public void afegirClient(String nomClient, GestorClients gestor) {
         nom.put(nomClient, gestor);
+        String entradaMsg = "DEBUG: multicast Entra: " + nomClient;
+        System.out.println(entradaMsg);
+        enviarMissatgeGrup(Missatge.getMissatgeGrup(entradaMsg));
     }
+
 
     public void eliminarClient(String nomClient) {
         if (nom.containsKey(nomClient)) {
@@ -60,12 +67,13 @@ public class ServidorXat {
         }
     }
 
-    public void enviarMissatgePersonal(String destinatari, String nom, String missatge) {
+    public void enviarMissatgePersonal(String destinatari, String remitent, String missatge) {
         GestorClients gestor = nom.get(destinatari);
         if (gestor != null) {
-            gestor.enviarMissatge(nom, missatge);
+            gestor.enviarMissatge(remitent, missatge);
         }
     }
+
 
     public static void main(String[] args) {
         ServidorXat servidor = new ServidorXat();

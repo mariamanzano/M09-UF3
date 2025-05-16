@@ -6,7 +6,7 @@ public class Missatge {
     public static final String CODI_SORTIR_CLIENT = "1003";
     public static String getMissatgePersonal(String destinatari, String
     missatge) {
-        return CODI_MSG_PERSONAL + "#" + destinatari + "#" + missatge;
+        return CODI_MSG_PERSONAL + "#" + destinatari + "#" + missatge;          
     }
     public static String getMissatgeGrup(String missatge) {
         return CODI_MSG_GRUP + "#" + missatge;
