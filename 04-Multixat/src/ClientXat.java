@@ -22,10 +22,23 @@ public class ClientXat {
                     System.out.println("DEBUG: Iniciant rebuda de missatges...");
                     while (!sortir) {
                         String missatgeCru = (String) entrada.readObject();
+
+                        if (missatgeCru == null || missatgeCru.trim().isEmpty()) {
+                            continue;
+                        }
+
+                        if (!missatgeCru.contains("#")) {
+                            System.out.println(missatgeCru);
+                            continue;
+                        }
+
                         String codi = Missatge.getCodiMissatge(missatgeCru);
                         String[] parts = Missatge.getPartsMissatge(missatgeCru);
 
-                        if (codi == null || parts == null) continue;
+                        if (codi == null || parts == null || parts.length < 2) {
+                            System.out.println("WARN: missatge buit o incorrecte [" + missatgeCru + "]");
+                            continue;
+                        }
 
                         switch (codi) {
                             case Missatge.CODI_SORTIR_TOTS:
@@ -36,7 +49,7 @@ public class ClientXat {
                                 System.out.println(parts[1]);
                                 break;
                             default:
-                                System.out.println("Error rebent missatge.");
+                                System.out.println("Error rebent missatge amb codi desconegut: " + codi);
                         }
                     }
 
@@ -132,7 +145,6 @@ public class ClientXat {
                     System.out.println("Opció no vàlida.");
             }
         }
-
         sc.close();
         client.tancarClient();
     }
